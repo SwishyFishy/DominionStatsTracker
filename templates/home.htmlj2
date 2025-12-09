@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/home.css') }}"/>
+    <link rel="stylesheet" href="static/styles/home.css"/>
     <title>DominionStats</title>
 </head>
 <body>
@@ -59,15 +59,16 @@
                         <option value="colonies">colonies</option>
                     </select>
                 </td>
+                <script src="static/scripts/notes_enabler.js" defer></script>
                 <td>
-                    <select name="kingdom_type">
+                    <select name="kingdom_type" id="kingdom_type" value="RSo10">
                         <option value="RSo10">RSo10</option>
                         <option value="Constructed">Constructed</option>
                         <option value="Random">Random</option>
                     </select>
                 </td>
-                <td><input name="sets" type="text"/></td>
-                <td><input name="notes" type="text"/></td>
+                <td><input name="sets" id="sets" type="text"/></td>
+                <td><input name="notes" id="notes" type="text" disabled/></td>
             </tr>
         </table>
         <input type="submit" value="Submit"/>
