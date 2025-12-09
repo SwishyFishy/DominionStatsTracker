@@ -67,7 +67,8 @@
                         <option value="Random">Random</option>
                     </select>
                 </td>
-                <td><input name="sets" id="sets" type="text"/></td>
+                <!--Two notes fields because notes_enabler makes sure only 1 is ever used-->
+                <td><input name="notes" id="sets" type="text"/></td>
                 <td><input name="notes" id="notes" type="text" disabled/></td>
             </tr>
         </table>

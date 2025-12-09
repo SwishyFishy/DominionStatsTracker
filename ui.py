@@ -40,7 +40,7 @@ def newgame():
     winner = request.form['winner']
     end = request.form['end_condition']
     ktype = request.form['kingdom_type']
-    notes = request.form['sets'] + ' ' + request.form['notes']
+    notes = request.form['notes']
 
     # Connect to database
     db = sqlite3.connect("dominionstats.db")
