@@ -20,8 +20,7 @@
                 <th>Winner</th>
                 <th>Game-End Condition</th>
                 <th>Game Type</th>
-                <th>Kingdom <i>(RSo10 only)</i></th>
-                <th>Game Notes</th>
+                <th>Kingdom</th>
             </tr>
             {% for row in PASSED_data %}
                 <tr>
@@ -33,13 +32,7 @@
                     <td>{{ row.winner }}</td>
                     <td>{{ row.end_condition }}</td>
                     <td>{{ row.kingdom_type }}</td>
-                    {% if row.kingdom_type == "RSo10": %}
-                        <td>{{ row.kingdom_type_details }}</td>
-                        <td></td>
-                    {% else %}
-                        <td></td>
-                        <td>{{ row.kingdom_type_details }}</td>
-                    {% endif %}
+                    <td>{{ row.kingdom_type_details }}</td>
                 </tr>
             {% endfor %}
 
@@ -59,7 +52,6 @@
                         <option value="colonies">colonies</option>
                     </select>
                 </td>
-                <script src="static/scripts/notes_enabler.js" defer></script>
                 <td>
                     <select name="kingdom_type" id="kingdom_type" value="RSo10">
                         <option value="RSo10">RSo10</option>
@@ -67,9 +59,8 @@
                         <option value="Random">Random</option>
                     </select>
                 </td>
-                <!--Two notes fields because notes_enabler makes sure only 1 is ever used-->
-                <td><input name="notes" id="sets" type="text"/></td>
-                <td><input name="notes" id="notes" type="text" disabled/></td>
+                <!--Two sets fields because notes_enabler makes sure only 1 is ever used-->
+                <td><input name="sets" id="sets" type="text"/></td>
             </tr>
         </table>
         <input type="submit" value="Submit"/>

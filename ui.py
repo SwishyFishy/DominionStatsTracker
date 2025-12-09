@@ -11,7 +11,7 @@ def home():
     # Get data
     db = sqlite3.connect("dominionstats.db")
     api = db.cursor()
-    rows = api.execute("SELECT * FROM games;").fetchall()
+    rows = api.execute("SELECT * FROM test_games;").fetchall()
     
     # Close the database connection
     db.close()
@@ -40,7 +40,7 @@ def newgame():
     winner = request.form['winner']
     end = request.form['end_condition']
     ktype = request.form['kingdom_type']
-    notes = request.form['notes']
+    notes = request.form['sets']
 
     # Connect to database
     db = sqlite3.connect("dominionstats.db")
@@ -48,7 +48,7 @@ def newgame():
 
     # Insert new game record
     try:
-        api.execute("INSERT INTO games VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [p1, p2, p1_score, p2_score, winner, p1_t1, p1_t2, p2_t1, p2_t2, end, ktype, notes])
+        api.execute("INSERT INTO test_games VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [p1, p2, p1_score, p2_score, winner, p1_t1, p1_t2, p2_t1, p2_t2, end, ktype, notes])
         db.commit()
     except sqlite3.Error as e:
         return redirect(url_for('error'))
