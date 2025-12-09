@@ -11,7 +11,7 @@
     <p><i>2-player games</i></p>
     <form method="post" action="/newgame">
         <table>
-            <tr>
+            <thead>
                 <th>First Player</th>
                 <th>Initial Coin</th>
                 <th>Second Player</th>
@@ -21,7 +21,7 @@
                 <th>Game-End Condition</th>
                 <th>Game Type</th>
                 <th>Kingdom</th>
-            </tr>
+            </thead>
             {% for row in PASSED_data %}
                 <tr>
                     <td>{{ row.first_player }}</td>
@@ -63,7 +63,7 @@
                 <td><input name="sets" id="sets" type="text"/></td>
             </tr>
         </table>
-        <input type="submit" value="Submit"/>
+        <input type="submit" value="Submit New Game"/>
     </form>
 </body>
 </html>

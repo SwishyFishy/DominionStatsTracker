@@ -1,4 +1,15 @@
-th, td{
+thead{
+    position: sticky;
+    top: 0;
+
+    background-color: aqua;
+}
+
+th{
+    padding: .5em 0em;
+}
+
+td{
     padding-right: 3em;
 }
 
