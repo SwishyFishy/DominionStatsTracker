@@ -9,50 +9,50 @@
 <body>
     <h1>Dominion Statistics</h1>
     <p><i>2-player games</i></p>
-    <table>
-        <tr>
-            <th>First Player</th>
-            <th>Initial Coin</th>
-            <th>Second Player</th>
-            <th>Initial Coin</th>
-            <th>Final Score</th>
-            <th>Winner</th>
-            <th>Game-End Condition</th>
-            <th>Game Type</th>
-            <th>Kingdom <i>(RSo10 only)</i></th>
-            <th>Game Notes</th>
-        </tr>
-        {% for row in PASSED_data %}
+    <form method="post" action="/newgame">
+        <table>
             <tr>
-                <td>{{ row.first_player }}</td>
-                <td>{{ row.first_player_t1_coin }} / {{ row.first_player_t2_coin }}</td>
-                <td>{{ row.second_player }}</td>
-                <td>{{ row.second_player_t1_coin }} / {{ row.second_player_t2_coin }}</td>
-                <td>{{ row.first_player_score }} : {{ row.second_player_score }}</td>
-                <td>{{ row.winner }}</td>
-                <td>{{ row.end_condition }}</td>
-                <td>{{ row.kingdom_type }}</td>
-                {% if row.kingdom_type == "RSo10": %}
-                    <td>{{ row.kingdom_type_details }}</td>
-                    <td></td>
-                {% else %}
-                    <td></td>
-                    <td>{{ row.kingdom_type_details }}</td>
-                {% endif %}
+                <th>First Player</th>
+                <th>Initial Coin</th>
+                <th>Second Player</th>
+                <th>Initial Coin</th>
+                <th>Final Score</th>
+                <th>Winner</th>
+                <th>Game-End Condition</th>
+                <th>Game Type</th>
+                <th>Kingdom <i>(RSo10 only)</i></th>
+                <th>Game Notes</th>
             </tr>
-        {% endfor %}
+            {% for row in PASSED_data %}
+                <tr>
+                    <td>{{ row.first_player }}</td>
+                    <td>{{ row.first_player_t1_coin }} / {{ row.first_player_t2_coin }}</td>
+                    <td>{{ row.second_player }}</td>
+                    <td>{{ row.second_player_t1_coin }} / {{ row.second_player_t2_coin }}</td>
+                    <td>{{ row.first_player_score }} : {{ row.second_player_score }}</td>
+                    <td>{{ row.winner }}</td>
+                    <td>{{ row.end_condition }}</td>
+                    <td>{{ row.kingdom_type }}</td>
+                    {% if row.kingdom_type == "RSo10": %}
+                        <td>{{ row.kingdom_type_details }}</td>
+                        <td></td>
+                    {% else %}
+                        <td></td>
+                        <td>{{ row.kingdom_type_details }}</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
 
-        <!-- New Game Entry -->
-        <tr>   
-            <form action="/newgame">
-                <td><input type="text"/></td>
-                <td><input type="number"/> / <input type="number"/></td>
-                <td><input type="text"/></td>
-                <td><input type="number"/> / <input type="number"/></td>
-                <td><input type="number"/> : <input type="number"/></td>
-                <td><input type="text"/></td>
+            <!-- New Game Entry -->
+            <tr>
+                <td><input name="player1" type="text"/></td>
+                <td><input name="player1_t1_coin" type="number"/> / <input name="player1_t2_coin" type="number"/></td>
+                <td><input name="player2" type="text"/></td>
+                <td><input name="player2_t1_coin" type="number"/> / <input name="player2_t2_coin" type="number"/></td>
+                <td><input name="player1_score" type="number"/> : <input name="player2_score" type="number"/></td>
+                <td><input name="winner" type="text"/></td>
                 <td>
-                    <select>
+                    <select name="end_condition">
                         <option value="pileout">pileout</option>
                         <option value="concession">concession</option>
                         <option value="provinces">provinces</option>
@@ -60,16 +60,17 @@
                     </select>
                 </td>
                 <td>
-                    <select>
-                        <option value="provinces">RSo10</option>
-                        <option value="pileout">Constructed</option>
-                        <option value="concession">Random</option>
+                    <select name="kingdom_type">
+                        <option value="RSo10">RSo10</option>
+                        <option value="Constructed">Constructed</option>
+                        <option value="Random">Random</option>
                     </select>
                 </td>
-                <td><input type="text"/></td>
-                <td><input type="text"/></td>
-            </form>
-        </tr>
-    </table>
+                <td><input name="sets" type="text"/></td>
+                <td><input name="notes" type="text"/></td>
+            </tr>
+        </table>
+        <input type="submit" value="Submit"/>
+    </form>
 </body>
 </html>
