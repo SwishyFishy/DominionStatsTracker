@@ -1,0 +1,11 @@
+th, td{
+    padding-right: 3em;
+}
+
+table tr:nth-child(2n){
+    background-color: bisque;
+}
+
+input[type="number"]{
+    width: 3em;
+}
