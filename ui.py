@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, redirect, url_for
 import sqlite3
+import re
 
 # Initialize webpage
 app = Flask(__name__)
@@ -33,23 +34,22 @@ def home():
 def newgame():
 
     # Extract data
-    num_players = request.form['num_players']
-    p1 = request.form['player1']
-    p2 = request.form['player2']
-    p3 = request.form['player3']
-    p4 = request.form['player4']
-    p1_t1 = request.form['player1_t1_coin']
-    p1_t2 = request.form['player1_t2_coin']
-    p2_t1 = request.form['player2_t1_coin']
-    p2_t2 = request.form['player2_t2_coin']
-    p3_t1 = request.form['player3_t1_coin']
-    p3_t2 = request.form['player3_t2_coin']
-    p4_t1 = request.form['player4_t1_coin']
-    p4_t2 = request.form['player4_t2_coin']
-    p1_score = request.form['player1_score']
-    p2_score = request.form['player2_score']
-    p3_score = request.form['player3_score']
-    p4_score = request.form['player4_score']
+    p1 = request.form['p1']
+    p2 = request.form['p2']
+    p3 = request.form['p3']
+    p4 = request.form['p4']
+    p1_t1 = request.form['p1_t1']
+    p1_t2 = request.form['p1_t2']
+    p2_t1 = request.form['p2_t1']
+    p2_t2 = request.form['p2_t2']
+    p3_t1 = request.form['p3_t1']
+    p3_t2 = request.form['p3_t2']
+    p4_t1 = request.form['p4_t1']
+    p4_t2 = request.form['p4_t2']
+    p1_score = request.form['p1_score']
+    p2_score = request.form['p2_score']
+    p3_score = request.form['p3_score']
+    p4_score = request.form['p4_score']
     winner = request.form['winner']
     end = request.form['end_condition']
     ktype = request.form['kingdom_type']
@@ -62,20 +62,31 @@ def newgame():
 
     # Insert new game record
     try:
-        api.execute("INSERT INTO expanded_games VALUES (NULL, ?, ?, ?, ?, ?, ?);", [num_players, winner, end, ktype, notes, sets])
+
+        # Define REGEXP function for python
+        def regexp(expr, item):
+            reg = re.compile(expr)
+            return reg.search(item) is not None
+        db.create_function("REGEXP", 2, regexp)
+
+        # Add to database
+        api.execute("INSERT INTO expanded_games VALUES (NULL, ?, ?, ?, ?, ?, ?);", [2 + ((2 if p4 != '' else 1) if p3 != '' else 0), winner, end, ktype, notes, sets])
         rowid = api.lastrowid
         api.execute("INSERT INTO player_went_first VALUES (?, ?, ?, ?, ?);", [rowid, p1, p1_score, p1_t1, p1_t2])
         api.execute("INSERT INTO player_went_second VALUES (?, ?, ?, ?, ?);", [rowid, p2, p2_score, p2_t1, p2_t2])
-        api.execute("INSERT INTO player_went_third VALUES (?, ?, ?, ?, ?);", [rowid, p3, p3_score, p3_t1, p3_t2])
-        api.execute("INSERT INTO player_went_fourth VALUES (?, ?, ?, ?, ?);", [rowid, p4, p4_score, p4_t1, p4_t2])
+        if p3 != '':
+            api.execute("INSERT INTO player_went_third VALUES (?, ?, ?, ?, ?);", [rowid, p3, p3_score, p3_t1, p3_t2])
+        if p4 != '':
+            api.execute("INSERT INTO player_went_fourth VALUES (?, ?, ?, ?, ?);", [rowid, p4, p4_score, p4_t1, p4_t2])
 
         db.commit()
 
-    except sqlite3.Error:
-        return redirect(url_for('error'))
-
-    # Close the database connection
-    db.close()
+    except sqlite3.Error as e:
+        return str(e)
+    
+    # Always close the database connection
+    finally:
+        db.close()
     
     # Return to the homepage
     return redirect(url_for('home'))
