@@ -23,10 +23,6 @@ def home():
     # Close the database connection
     db.close()
 
-    #return rows
-    #return data_dict
-    #return players
-
     # Render homepage using most current data
     return render_template("home.jinja", PASSED_data = data_dict, PASSED_players = player_dict)
 
@@ -67,7 +63,7 @@ def newgame():
         # Define REGEXP function for python
         def regexp(expr, item):
             reg = re.compile(expr)
-            return reg.search(item) is not None
+            return reg.match(item) is not None
         db.create_function("REGEXP", 2, regexp)
 
         # Add to database
