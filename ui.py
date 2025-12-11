@@ -22,7 +22,7 @@ def home():
     #return data_dict
 
     # Render homepage using most current data
-    return render_template("home.htmlj2", PASSED_data = data_dict)
+    return render_template("home.jinja", PASSED_data = data_dict)
 
 # Define game submission page
 @app.route('/newgame', methods=['POST'])
