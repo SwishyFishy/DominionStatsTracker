@@ -9,10 +9,11 @@
 </head>
 <body>
     <h1>Dominion Statistics</h1>
-    <form method="post" action="/newgame">
+    <form method="post">
         <table>
             <thead>
                 <tr>
+                    <th rowspan="2">Delete Row</th>
                     <th rowspan="2">Winner</th>
                     <th rowspan="2">Game End Condition</th>
                     <th rowspan="2">Kingdom Type</th>
@@ -46,6 +47,7 @@
                 <!-- Data in database -->
                 {% for row in PASSED_data %}
                     <tr>
+                        <td><button type="submit" name="delete_row_{{ row['g_id'] }}" id="delete_row_{{ row['g_id'] }}" formmethod="get" formaction="/delete/{{ row['g_id'] }}" formnovalidate>X</button></td>
                         <td>{{ row['winner'] }}</td>
                         <td>By: {{ row['end_condition'] }}</td>
                         <td>{{ row['kingdom_type'] }}</td>
@@ -72,6 +74,7 @@
 
                 <!-- New data entry row -->
                 <tr id="new_game_input">
+                    <td><button type="submit" name="submit" id="submit" formaction="/newgame">Submit New Game</button></td>
                     <td>
                         <select name="winner" id="winner">
                             <option value="no winner">no winner</option>
@@ -149,7 +152,6 @@
                 </tr>
             </tbody>
         </table>
-        <input type="submit" name="submit" id="submit" value="Submit New Game"/>
     </form>
 </body>
 </html>

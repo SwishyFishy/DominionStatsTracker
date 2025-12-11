@@ -12,7 +12,7 @@ def home():
     # Get data
     db = sqlite3.connect("dominionstats.db")
     api = db.cursor()
-    rows = api.execute("SELECT * FROM expanded_games AS g LEFT JOIN player_went_first AS one ON g.g_id = one.g_id LEFT JOIN player_went_second AS two ON g.g_id = two.g_id LEFT JOIN player_went_third AS three ON g.g_id = three.g_id LEFT JOIN player_went_fourth AS four ON g.g_id = four.g_id;").fetchall()
+    rows = api.execute("SELECT * FROM expanded_games AS g LEFT JOIN player_went_first AS one ON g.g_id = one.game_id LEFT JOIN player_went_second AS two ON g.g_id = two.game_id LEFT JOIN player_went_third AS three ON g.g_id = three.game_id LEFT JOIN player_went_fourth AS four ON g.g_id = four.game_id;").fetchall()
     column_names = [name[0] for name in api.description]
     data_dict = [dict(zip(column_names, row)) for row in rows]
 
@@ -23,6 +23,7 @@ def home():
     # Close the database connection
     db.close()
 
+    #return rows
     #return data_dict
     #return players
 
@@ -88,6 +89,28 @@ def newgame():
     finally:
         db.close()
     
+    # Return to the homepage
+    return redirect(url_for('home'))
+
+@app.route('/delete/<row>')
+def delete(row):
+
+    # Connect to the database
+    db = sqlite3.connect("dominionstats.db")
+    api = db.cursor()
+
+    try:
+        api.execute("DELETE FROM expanded_games WHERE g_id = ?", [row])
+
+        db.commit()
+
+    except sqlite3.Error as e:
+        return str(e)
+    
+    # Always close the database connection
+    finally:
+        db.close()
+
     # Return to the homepage
     return redirect(url_for('home'))
 
