@@ -70,8 +70,15 @@
                 {% endfor %}
 
                 <!-- New data entry row -->
-                <tr>
-                    <td><input type="text" name="winner" id="winner"/></td>
+                <tr id="new_game_input">
+                    <td>
+                        <select name="winner" id="winner">
+                            <option value="no winner">no winner</option>
+                            {% for player in PASSED_players %}
+                                <option value="{{ player['name'] }}">{{ player['name'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
                     <td>
                         <select name="end_condition" id="end_condition">
                             <option value="pileout">By: pileout</option>
@@ -96,19 +103,45 @@
                     <td><input type="text" name="notes" id="notes"/></td>
                     <td><input type="text" name="sets" id="sets"/></td>
 
-                    <td><input type="text" name="p1" id="p1"/></td>
+                    <td>
+                        <select name="p1" id="p1">
+                            {% for player in PASSED_players %}
+                                <option value="{{ player['name'] }}">{{ player['name'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
                     <td><input type="number" name="p1_score" id="p1_score"/></td>
                     <td><input type="number" name="p1_t1" id="p1_t1"/></td>
                     <td><input type="number" name="p1_t2" id="p1_t2"/></td>
-                    <td><input type="text" name="p2" id="p2"/></td>
+                    <td>
+                        <select name="p2" id="p2">
+                            {% for player in PASSED_players %}
+                                <option value="{{ player['name'] }}">{{ player['name'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
                     <td><input type="number" name="p2_score" id="p2_score"/></td>
                     <td><input type="number" name="p2_t1" id="p2_t1"/></td>
                     <td><input type="number" name="p2_t2" id="p2_t2"/></td>
-                    <td><input type="text" name="p3" id="p3"/></td>
+                    <td>
+                        <select name="p3" id="p3">
+                            <option value=""> </option>
+                            {% for player in PASSED_players %}
+                                <option value="{{ player['name'] }}">{{ player['name'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
                     <td><input type="number" name="p3_score" id="p3_score"/></td>
                     <td><input type="number" name="p3_t1" id="p3_t1"/></td>
                     <td><input type="number" name="p3_t2" id="p3_t2"/></td>
-                    <td><input type="text" name="p4" id="p4"/></td>
+                    <td>
+                        <select name="p4" id="p4">
+                            <option value=""> </option>
+                            {% for player in PASSED_players %}
+                                <option value="{{ player['name'] }}">{{ player['name'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
                     <td><input type="number" name="p4_score" id="p4_score"/></td>
                     <td><input type="number" name="p4_t1" id="p4_t1"/></td>
                     <td><input type="number" name="p4_t2" id="p4_t2"/></td>
