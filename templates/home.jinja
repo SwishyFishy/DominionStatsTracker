@@ -70,9 +70,52 @@
                 {% endfor %}
 
                 <!-- New data entry row -->
+                <tr>
+                    <td><input type="text" name="winner" id="winner"/></td>
+                    <td>
+                        <select name="end_condition" id="end_condition">
+                            <option value="pileout">By: pileout</option>
+                            <option value="concession">By: concession</option>
+                            <option value="provinces">By: provinces</option>
+                            <option value="colonies">By: colonies</option>
+                            <option value="agreed_draw">players agreed to a draw</option>
+                            <option value="interrupted">game was interrupted</option>
+                            <option value="other">other </option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="kingdom_type" id="kingdom_type">
+                            <option value="RSo10">RSo10</option>
+                            <option value="Random">Random</option>
+                            <option value="Constructed">Constructed</option>
+                            <option value="KOTW">KotW</option>
+                            <option value="Draft">Draft</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </td>
+                    <td><input type="text" name="notes" id="notes"/></td>
+                    <td><input type="text" name="sets" id="sets"/></td>
+
+                    <td><input type="text" name="p1" id="p1"/></td>
+                    <td><input type="number" name="p1_score" id="p1_score"/></td>
+                    <td><input type="number" name="p1_t1" id="p1_t1"/></td>
+                    <td><input type="number" name="p1_t2" id="p1_t2"/></td>
+                    <td><input type="text" name="p2" id="p2"/></td>
+                    <td><input type="number" name="p2_score" id="p2_score"/></td>
+                    <td><input type="number" name="p2_t1" id="p2_t1"/></td>
+                    <td><input type="number" name="p2_t2" id="p2_t2"/></td>
+                    <td><input type="text" name="p3" id="p3"/></td>
+                    <td><input type="number" name="p3_score" id="p3_score"/></td>
+                    <td><input type="number" name="p3_t1" id="p3_t1"/></td>
+                    <td><input type="number" name="p3_t2" id="p3_t2"/></td>
+                    <td><input type="text" name="p4" id="p4"/></td>
+                    <td><input type="number" name="p4_score" id="p4_score"/></td>
+                    <td><input type="number" name="p4_t1" id="p4_t1"/></td>
+                    <td><input type="number" name="p4_t2" id="p4_t2"/></td>
+                </tr>
             </tbody>
         </table>
-        <input type="submit" value="Submit New Game"/>
+        <input type="submit" name="submit" id="submit" value="Submit New Game"/>
     </form>
 </body>
 </html>
