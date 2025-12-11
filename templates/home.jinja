@@ -8,60 +8,69 @@
 </head>
 <body>
     <h1>Dominion Statistics</h1>
-    <p><i>2-player games</i></p>
     <form method="post" action="/newgame">
         <table>
             <thead>
-                <th>First Player</th>
-                <th>Initial Coin</th>
-                <th>Second Player</th>
-                <th>Initial Coin</th>
-                <th>Final Score</th>
-                <th>Winner</th>
-                <th>Game-End Condition</th>
-                <th>Game Type</th>
-                <th>Kingdom</th>
-            </thead>
-            {% for row in PASSED_data %}
                 <tr>
-                    <td>{{ row.first_player }}</td>
-                    <td>{{ row.first_player_t1_coin }} / {{ row.first_player_t2_coin }}</td>
-                    <td>{{ row.second_player }}</td>
-                    <td>{{ row.second_player_t1_coin }} / {{ row.second_player_t2_coin }}</td>
-                    <td>{{ row.first_player_score }} : {{ row.second_player_score }}</td>
-                    <td>{{ row.winner }}</td>
-                    <td>{{ row.end_condition }}</td>
-                    <td>{{ row.kingdom_type }}</td>
-                    <td>{{ row.kingdom_type_details }}</td>
+                    <th rowspan="2">Winner</th>
+                    <th rowspan="2">Game End Condition</th>
+                    <th rowspan="2">Kingdom Type</th>
+                    <th rowspan="2">Kingdom Construction Notes</th>
+                    <th rowspan="2">Expansions</th>
+                    <th colspan="4">First Player</th>
+                    <th colspan="4">Second Player</th>
+                    <th colspan="4">Third Player</th>
+                    <th colspan="4">Fourth Player</th>
                 </tr>
-            {% endfor %}
+                <tr>
+                    <th>Name</th>
+                    <th>Score</th>
+                    <th>Turn 1 Coin</th>
+                    <th>Turn 2 Coin</th>
+                    <th>Name</th>
+                    <th>Score</th>
+                    <th>Turn 1 Coin</th>
+                    <th>Turn 2 Coin</th>
+                    <th>Name</th>
+                    <th>Score</th>
+                    <th>Turn 1 Coin</th>
+                    <th>Turn 2 Coin</th>
+                    <th>Name</th>
+                    <th>Score</th>
+                    <th>Turn 1 Coin</th>
+                    <th>Turn 2 Coin</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data in database -->
+                {% for row in PASSED_data %}
+                    <tr>
+                        <td>{{ row['winner'] }}</td>
+                        <td>By: {{ row['end_condition'] }}</td>
+                        <td>{{ row['kingdom_type'] }}</td>
+                        <td>{{ row['notes'] }}</td>
+                        <td>{{ row['sets'] }}</td>
+                        <td>{{ row['first_player_name'] }}</td>
+                        <td>{{ row['first_player_score'] }}</td>
+                        <td>{{ row['first_player_t1_coin'] }}</td>
+                        <td>{{ row['first_player_t2_coin'] }}</td>
+                        <td>{{ row['second_player_name'] }}</td>
+                        <td>{{ row['second_player_score'] }}</td>
+                        <td>{{ row['first_player_t1_coin'] }}</td>
+                        <td>{{ row['first_player_t2_coin'] }}</td>
+                        <td>{{ row['third_player_name'] if row['num_players'] > 2 else "--"}}</td>
+                        <td>{{ row['third_player_score'] if row['num_players'] > 2 else "--"}}</td>
+                        <td>{{ row['first_player_t1_coin'] if row['num_players'] > 2 else "--"}}</td>
+                        <td>{{ row['first_player_t2_coin'] if row['num_players'] > 2 else "--"}}</td>
+                        <td>{{ row['fourth_player_name'] if row['num_players'] > 3 else "--"}}</td>
+                        <td>{{ row['fourth_player_score'] if row['num_players'] > 3 else "--"}}</td>
+                        <td>{{ row['fourth_player_t1_coin'] if row['num_players'] > 3 else "--"}}</td>
+                        <td>{{ row['fourth_player_t2_coin'] if row['num_players'] > 3 else "--"}}</td>
+                    </tr>
+                {% endfor %}
 
-            <!-- New Game Entry -->
-            <tr>
-                <td><input name="player1" type="text"/></td>
-                <td><input name="player1_t1_coin" type="number"/> / <input name="player1_t2_coin" type="number"/></td>
-                <td><input name="player2" type="text"/></td>
-                <td><input name="player2_t1_coin" type="number"/> / <input name="player2_t2_coin" type="number"/></td>
-                <td><input name="player1_score" type="number"/> : <input name="player2_score" type="number"/></td>
-                <td><input name="winner" type="text"/></td>
-                <td>
-                    <select name="end_condition">
-                        <option value="pileout">pileout</option>
-                        <option value="concession">concession</option>
-                        <option value="provinces">provinces</option>
-                        <option value="colonies">colonies</option>
-                    </select>
-                </td>
-                <td>
-                    <select name="kingdom_type" id="kingdom_type" value="RSo10">
-                        <option value="RSo10">RSo10</option>
-                        <option value="Constructed">Constructed</option>
-                        <option value="Random">Random</option>
-                    </select>
-                </td>
-                <!--Two sets fields because notes_enabler makes sure only 1 is ever used-->
-                <td><input name="sets" id="sets" type="text"/></td>
-            </tr>
+                <!-- New data entry row -->
+            </tbody>
         </table>
         <input type="submit" value="Submit New Game"/>
     </form>

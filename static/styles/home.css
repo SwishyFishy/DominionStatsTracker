@@ -13,7 +13,7 @@ td{
     padding-right: 3em;
 }
 
-table tr:nth-child(2n){
+table tbody tr:nth-child(2n){
     background-color: bisque;
 }
 
