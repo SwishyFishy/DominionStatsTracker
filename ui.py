@@ -16,7 +16,7 @@ def home():
     column_names = [name[0] for name in api.description]
     data_dict = [dict(zip(column_names, row)) for row in rows]
 
-    players = api.execute("SELECT name FROM players WHERE name NOT LIKE 'no winner';").fetchall()
+    players = api.execute("SELECT name FROM players WHERE name NOT LIKE 'None';").fetchall()
     column_names = [name[0] for name in api.description]
     player_dict = [dict(zip(column_names, player)) for player in players]
     
