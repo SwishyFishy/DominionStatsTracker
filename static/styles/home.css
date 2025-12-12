@@ -32,6 +32,10 @@ header h1{
 /* Table Styles */
 /****************/
 
+#table{
+    margin-right: 3em;
+}
+
 #table thead{
     background-color: aqua;
 
@@ -99,7 +103,7 @@ main{
 
     box-sizing: border-box;
     height: 100%;
-    width: 29.5vw; /* The width of the 3rd and 4th player columns, by trial and error */
+    width: 31.2vw; /* The width of the 3rd and 4th player columns, by trial and error */
     background-color: white;
 
     z-index: 2;
@@ -113,5 +117,38 @@ main{
     box-sizing: border-box;
 
     padding: 1em;
-    border: 1em solid black;
+    border: .5em solid black;
+    margin-right: -.5em;
+}
+
+#hide_filters, #show_filters{
+    position: absolute;
+    left: 0;
+    top: calc((100vh - 6em) / 2);
+
+    height: 3em;
+    width: 1em;
+    padding: 0em;
+    border: .15em solid black;
+    border-radius: .5em;
+    border-top-left-radius: 0em;
+    border-bottom-left-radius: 0em;
+    margin: 0em .15em 0em -.15em;
+}
+#show_filters{
+    left: -3em;
+
+    width: 2.5em;
+    border-radius: .5em;
+    border-top-right-radius: 0em;
+    border-bottom-right-radius: 0em;
+    margin: 0em;
+}
+
+#filters_content h2{
+    margin: 0em;
+}
+
+#filters_content span{
+    font-style: italic;
 }

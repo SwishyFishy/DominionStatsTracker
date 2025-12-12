@@ -46,7 +46,7 @@
                     <tbody>
                         <!-- Data in database -->
                         {% for row in PASSED_data %}
-                            <tr>
+                            <tr class="{{ 'multiplayer' if row['num_players'] > 2 else '' }}">
                                 <td><button type="submit" name="delete_row_{{ row['g_id'] }}" id="delete_row_{{ row['g_id'] }}" formmethod="get" formaction="/delete/{{ row['g_id'] }}" formnovalidate>X</button></td>
                                 <td>{{ row['winner'] }}</td>
                                 <td>By: {{ row['end_condition'] }}</td>
@@ -154,7 +154,10 @@
         </section>
         <section id="filters">
             <div id="filters_content">
-                <span>To view 3- and 4- player games, hide the filters menu.</span>
+                <button name="hide_filters" id="hide_filters">&gt;</button>
+                <button name="show_filters" id="show_filters">&lt;</button>
+                <h2>Filter Games</h2>
+                <span>To view 3- and 4- player games, hide this menu.</span>
             </div>
         </section>
     </main>
