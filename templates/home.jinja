@@ -8,150 +8,155 @@
     <title>DominionStats</title>
 </head>
 <body>
-    <h1>Dominion Statistics</h1>
-    <form method="post">
-        <table>
-            <thead>
-                <tr>
-                    <th rowspan="2">Delete Row</th>
-                    <th rowspan="2">Winner</th>
-                    <th rowspan="2">Game End Condition</th>
-                    <th rowspan="2">Kingdom Type</th>
-                    <th rowspan="2">Kingdom Construction Notes</th>
-                    <th rowspan="2">Expansions</th>
-                    <th colspan="4">First Player</th>
-                    <th colspan="4">Second Player</th>
-                    <th colspan="4">Third Player</th>
-                    <th colspan="4">Fourth Player</th>
-                </tr>
-                <tr>
-                    <th>Name</th>
-                    <th>Score</th>
-                    <th>Turn 1 Coin</th>
-                    <th>Turn 2 Coin</th>
-                    <th>Name</th>
-                    <th>Score</th>
-                    <th>Turn 1 Coin</th>
-                    <th>Turn 2 Coin</th>
-                    <th>Name</th>
-                    <th>Score</th>
-                    <th>Turn 1 Coin</th>
-                    <th>Turn 2 Coin</th>
-                    <th>Name</th>
-                    <th>Score</th>
-                    <th>Turn 1 Coin</th>
-                    <th>Turn 2 Coin</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Data in database -->
-                {% for row in PASSED_data %}
-                    <tr>
-                        <td><button type="submit" name="delete_row_{{ row['g_id'] }}" id="delete_row_{{ row['g_id'] }}" formmethod="get" formaction="/delete/{{ row['g_id'] }}" formnovalidate>X</button></td>
-                        <td>{{ row['winner'] }}</td>
-                        <td>By: {{ row['end_condition'] }}</td>
-                        <td>{{ row['kingdom_type'] }}</td>
-                        <td>{{ row['notes'] }}</td>
-                        <td>{{ row['sets'] }}</td>
-                        <td>{{ row['first_player_name'] }}</td>
-                        <td>{{ row['first_player_score'] }}</td>
-                        <td>{{ row['first_player_t1_coin'] }}</td>
-                        <td>{{ row['first_player_t2_coin'] }}</td>
-                        <td>{{ row['second_player_name'] }}</td>
-                        <td>{{ row['second_player_score'] }}</td>
-                        <td>{{ row['first_player_t1_coin'] }}</td>
-                        <td>{{ row['first_player_t2_coin'] }}</td>
-                        <td>{{ row['third_player_name'] if row['num_players'] > 2 else "--"}}</td>
-                        <td>{{ row['third_player_score'] if row['num_players'] > 2 else "--"}}</td>
-                        <td>{{ row['first_player_t1_coin'] if row['num_players'] > 2 else "--"}}</td>
-                        <td>{{ row['first_player_t2_coin'] if row['num_players'] > 2 else "--"}}</td>
-                        <td>{{ row['fourth_player_name'] if row['num_players'] > 3 else "--"}}</td>
-                        <td>{{ row['fourth_player_score'] if row['num_players'] > 3 else "--"}}</td>
-                        <td>{{ row['fourth_player_t1_coin'] if row['num_players'] > 3 else "--"}}</td>
-                        <td>{{ row['fourth_player_t2_coin'] if row['num_players'] > 3 else "--"}}</td>
-                    </tr>
-                {% endfor %}
-
-                <!-- New data entry row -->
-                <tr id="new_game_input">
-                    <td><button type="submit" name="submit" id="submit" formaction="/newgame">Submit New Game</button></td>
-                    <td>
-                        <select name="winner" id="winner">
-                            <option value="None">None</option>
-                            {% for player in PASSED_players %}
-                                <option value="{{ player['name'] }}">{{ player['name'] }}</option>
-                            {% endfor %}
-                        </select>
-                    </td>
-                    <td>
-                        <select name="end_condition" id="end_condition">
-                            <option value="pileout">By: pileout</option>
-                            <option value="concession">By: concession</option>
-                            <option value="provinces">By: provinces</option>
-                            <option value="colonies">By: colonies</option>
-                            <option value="agreed_draw">players agreed to a draw</option>
-                            <option value="interrupted">game was interrupted</option>
-                            <option value="other">other </option>
-                        </select>
-                    </td>
-                    <td>
-                        <select name="kingdom_type" id="kingdom_type">
-                            <option value="RSo10">RSo10</option>
-                            <option value="Random">Random</option>
-                            <option value="Constructed">Constructed</option>
-                            <option value="KOTW">KotW</option>
-                            <option value="Draft">Draft</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </td>
-                    <td><input type="text" name="notes" id="notes"/></td>
-                    <td><input type="text" name="sets" id="sets"/></td>
-
-                    <td>
-                        <select name="p1" id="p1" required>
-                            {% for player in PASSED_players %}
-                                <option value="{{ player['name'] }}">{{ player['name'] }}</option>
-                            {% endfor %}
-                        </select>
-                    </td>
-                    <td><input type="number" name="p1_score" id="p1_score" required/></td>
-                    <td><input type="number" name="p1_t1" id="p1_t1" required/></td>
-                    <td><input type="number" name="p1_t2" id="p1_t2" required/></td>
-                    <td>
-                        <select name="p2" id="p2" required>
-                            {% for player in PASSED_players %}
-                                <option value="{{ player['name'] }}">{{ player['name'] }}</option>
-                            {% endfor %}
-                        </select>
-                    </td>
-                    <td><input type="number" name="p2_score" id="p2_score" required/></td>
-                    <td><input type="number" name="p2_t1" id="p2_t1" required/></td>
-                    <td><input type="number" name="p2_t2" id="p2_t2" required/></td>
-                    <td>
-                        <select name="p3" id="p3">
-                            <option value=""> </option>
-                            {% for player in PASSED_players %}
-                                <option value="{{ player['name'] }}">{{ player['name'] }}</option>
-                            {% endfor %}
-                        </select>
-                    </td>
-                    <td><input type="number" name="p3_score" id="p3_score" class="p3_input"/></td>
-                    <td><input type="number" name="p3_t1" id="p3_t1" class="p3_input"/></td>
-                    <td><input type="number" name="p3_t2" id="p3_t2" class="p3_input"/></td>
-                    <td>
-                        <select name="p4" id="p4">
-                            <option value=""> </option>
-                            {% for player in PASSED_players %}
-                                <option value="{{ player['name'] }}">{{ player['name'] }}</option>
-                            {% endfor %}
-                        </select>
-                    </td>
-                    <td><input type="number" name="p4_score" id="p4_score" class="p4_input"/></td>
-                    <td><input type="number" name="p4_t1" id="p4_t1" class="p4_input"/></td>
-                    <td><input type="number" name="p4_t2" id="p4_t2" class="p4_input"/></td>
-                </tr>
-            </tbody>
-        </table>
-    </form>
+    <header>
+        <h1>Dominion Statistics</h1>
+    </header>
+    <main>
+        <section id="table">
+            <form method="post">
+                <table>
+                    <thead>
+                        <tr>
+                            <th rowspan="2" class="delete">Delete Row</th>
+                            <th rowspan="2" class="name">Winner</th>
+                            <th rowspan="2" class="text">Game End</th>
+                            <th rowspan="2" class="text">Kingdom Type</th>
+                            <th rowspan="2" class="text">Kingdom Construction</th>
+                            <th rowspan="2" class="text">Expansions</th>
+                            <th colspan="4" class="player_header">First Player</th>
+                            <th colspan="4" class="player_header">Second Player</th>
+                            <th colspan="4" class="player_header">Third Player</th>
+                            <th colspan="4" class="player_header">Fourth Player</th>
+                        </tr>
+                        <tr>
+                            <th class="name">Name</th>
+                            <th class="number">Score</th>
+                            <th colspan="2">$ Split</th>
+                            <th class="name">Name</th>
+                            <th class="number">Score</th>
+                            <th colspan="2">$ Split</th>
+                            <th class="name">Name</th>
+                            <th class="number">Score</th>
+                            <th colspan="2">$ Split</th>
+                            <th class="name">Name</th>
+                            <th class="number">Score</th>
+                            <th colspan="2" >$ Split</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data in database -->
+                        {% for row in PASSED_data %}
+                            <tr>
+                                <td><button type="submit" name="delete_row_{{ row['g_id'] }}" id="delete_row_{{ row['g_id'] }}" formmethod="get" formaction="/delete/{{ row['g_id'] }}" formnovalidate>X</button></td>
+                                <td>{{ row['winner'] }}</td>
+                                <td>By: {{ row['end_condition'] }}</td>
+                                <td>{{ row['kingdom_type'] }}</td>
+                                <td>{{ row['notes'] }}</td>
+                                <td>{{ row['sets'] }}</td>
+                                <td>{{ row['first_player_name'] }}</td>
+                                <td>{{ row['first_player_score'] }}vp</td>
+                                <td>${{ row['first_player_t1_coin'] }}</td>
+                                <td>${{ row['first_player_t2_coin'] }}</td>
+                                <td>{{ row['second_player_name'] }}</td>
+                                <td>{{ row['second_player_score'] }}vp</td>
+                                <td>${{ row['first_player_t1_coin'] }}</td>
+                                <td>${{ row['first_player_t2_coin'] }}</td>
+                                <td>{{ row['third_player_name'] if row['num_players'] > 2 else "--"}}</td>
+                                <td>{{ row['third_player_score']|string + "vp" if row['num_players'] > 2 else "--"}}</td>
+                                <td>{{ "$" + row['first_player_t1_coin']|string if row['num_players'] > 2 else "--"}}</td>
+                                <td>{{ "$" + row['first_player_t2_coin']|string if row['num_players'] > 2 else "--"}}</td>
+                                <td>{{ row['fourth_player_name'] if row['num_players'] > 3 else "--"}}</td>
+                                <td>{{ row['fourth_player_score']|string + "vp" if row['num_players'] > 3 else "--"}}</td>
+                                <td>{{ "$" + row['fourth_player_t1_coin']|string if row['num_players'] > 3 else "--"}}</td>
+                                <td>{{ "$" + row['fourth_player_t2_coin']|string if row['num_players'] > 3 else "--"}}</td>
+                            </tr>
+                        {% endfor %}
+                        <!-- New data entry row -->
+                        <tr id="new_game_input">
+                            <td><button type="submit" name="submit" id="submit" formaction="/newgame">Submit New Game</button></td>
+                            <td>
+                                <select name="winner" id="winner">
+                                    <option value="None">None</option>
+                                    {% for player in PASSED_players %}
+                                        <option value="{{ player['name'] }}">{{ player['name'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <select name="end_condition" id="end_condition">
+                                    <option value="pileout">By: pileout</option>
+                                    <option value="concession">By: concession</option>
+                                    <option value="provinces">By: provinces</option>
+                                    <option value="colonies">By: colonies</option>
+                                    <option value="agreed_draw">players agreed to a draw</option>
+                                    <option value="interrupted">game was interrupted</option>
+                                    <option value="other">other </option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="kingdom_type" id="kingdom_type">
+                                    <option value="RSo10">RSo10</option>
+                                    <option value="Random">Random</option>
+                                    <option value="Constructed">Constructed</option>
+                                    <option value="KOTW">KotW</option>
+                                    <option value="Draft">Draft</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </td>
+                            <td><input type="text" name="notes" id="notes"/></td>
+                            <td><input type="text" name="sets" id="sets"/></td>
+                            <td>
+                                <select name="p1" id="p1" required>
+                                    {% for player in PASSED_players %}
+                                        <option value="{{ player['name'] }}">{{ player['name'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td><input type="number" name="p1_score" id="p1_score" class="number" required/></td>
+                            <td><input type="number" name="p1_t1" id="p1_t1" class="number" required/></td>
+                            <td><input type="number" name="p1_t2" id="p1_t2" class="number" required/></td>
+                            <td>
+                                <select name="p2" id="p2" required>
+                                    {% for player in PASSED_players %}
+                                        <option value="{{ player['name'] }}">{{ player['name'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td><input type="number" name="p2_score" id="p2_score" class="number" required/></td>
+                            <td><input type="number" name="p2_t1" id="p2_t1" class="number" required/></td>
+                            <td><input type="number" name="p2_t2" id="p2_t2" class="number" required/></td>
+                            <td>
+                                <select name="p3" id="p3">
+                                    <option value=""> </option>
+                                    {% for player in PASSED_players %}
+                                        <option value="{{ player['name'] }}">{{ player['name'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td><input type="number" name="p3_score" id="p3_score" class="p3_input number"/></td>
+                            <td><input type="number" name="p3_t1" id="p3_t1" class="p3_input number"/></td>
+                            <td><input type="number" name="p3_t2" id="p3_t2" class="p3_input number"/></td>
+                            <td>
+                                <select name="p4" id="p4">
+                                    <option value=""> </option>
+                                    {% for player in PASSED_players %}
+                                        <option value="{{ player['name'] }}">{{ player['name'] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td><input type="number" name="p4_score" id="p4_score" class="p4_input number"/></td>
+                            <td><input type="number" name="p4_t1" id="p4_t1" class="p4_input number"/></td>
+                            <td><input type="number" name="p4_t2" id="p4_t2" class="p4_input number"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </section>
+        <section id="filters">
+            <div id="filters_content">
+                <span>To view 3- and 4- player games, hide the filters menu.</span>
+            </div>
+        </section>
+    </main>
 </body>
 </html>

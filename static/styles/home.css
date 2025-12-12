@@ -1,19 +1,117 @@
-thead{
+body{
+    padding: 0em;
+    margin: 0em 0em 0em .5em;
+}
+
+/*****************/
+/* Header Styles */
+/*****************/
+
+header{
+    position: sticky;
+    top: 0;
+    left: 0;
+
+    box-sizing: border-box;
+    height: 6em;
+    width: 100%;
+    min-width: 96em; /* The minimum width of the table, by trial and error */
+
+    background-color: white;
+    z-index: 3;
+}
+
+header h1{
+    padding: 0em;
+    margin: 0em;
+
+    width: fit-content;
+}
+
+/****************/
+/* Table Styles */
+/****************/
+
+#table thead{
     background-color: aqua;
+
+    position: sticky;
+    top: 6em;
 }
 
-th{
-    padding: .5em 0em;
+#table th{
+    padding: .15em .15em;
 }
 
-td{
-    padding-right: 3em;
+#table thead tr:first-child th:first-child{
+    background-color: red;
 }
-
-table tbody tr:nth-child(2n){
+#table tbody tr:nth-child(2n){
     background-color: bisque;
 }
 
-input[type="number"]{
+#table td{
+    box-sizing: border-box;
+    padding: .0em .25em;
+}
+
+#table .delete{
     width: 3em;
+}
+#table .name{
+    width: 10em;
+}
+#table .text{
+    width: 10em;
+}
+#table .number{
+    width: 3em;
+}
+#table select{
+    width: 100%;
+    max-width: 100%;
+}
+
+#new_game_input{
+    position: sticky;
+    bottom: 0em;
+    left: 0;
+
+    box-sizing: border-box;
+    height: 6em;
+
+    background-color: white;
+    z-index: 1;
+}
+
+/*****************/
+/* Filter Styles */
+/*****************/
+
+main{
+    position: relative;
+}
+
+#filters{
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    box-sizing: border-box;
+    height: 100%;
+    width: 29.5vw; /* The width of the 3rd and 4th player columns, by trial and error */
+    background-color: white;
+
+    z-index: 2;
+}
+
+#filters_content{
+    position: sticky;
+    top: 6em;
+    left: 0;
+    height: calc(100vh - 6em);
+    box-sizing: border-box;
+
+    padding: 1em;
+    border: 1em solid black;
 }
