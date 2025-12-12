@@ -143,6 +143,8 @@ main{
     border-top-right-radius: 0em;
     border-bottom-right-radius: 0em;
     margin: 0em;
+
+    display: none;
 }
 
 #filters_content h2{
