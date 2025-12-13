@@ -5,6 +5,38 @@ import re
 # Initialize webpage
 app = Flask(__name__)
 
+###################
+# Query Functions #
+###################
+
+# Return all games in a list
+# Each list element is a dictionary representing 1 row that maps column name -> value
+def get_games(api: sqlite3.Cursor) -> list[dict]:
+    rows = api.execute("SELECT * FROM expanded_games AS g LEFT JOIN player_went_first AS one ON g.g_id = one.game_id LEFT JOIN player_went_second AS two ON g.g_id = two.game_id LEFT JOIN player_went_third AS three ON g.g_id = three.game_id LEFT JOIN player_went_fourth AS four ON g.g_id = four.game_id;").fetchall()
+    column_names = [name[0] for name in api.description]
+    data_dict = [dict(zip(column_names, row)) for row in rows]
+    return data_dict
+
+# Return all players (except 'None') in a list
+# Each list element is a dictionary with a single key/value pair; 'name' -> value
+def get_players(api: sqlite3.Cursor) -> list[dict]:
+    players = api.execute("SELECT name FROM players WHERE name NOT LIKE 'None';").fetchall()
+    column_names = [name[0] for name in api.description]
+    player_dict = [dict(zip(column_names, player)) for player in players]
+    return player_dict
+
+# Return all players' win counts in a list
+# Each list element is a dictionary representing 1 row that mas column name -> value
+def get_player_wins(api: sqlite3.Cursor) -> list[dict]:
+    rows = api.execute("SELECT winner, COUNT(*) AS wins, first_player_name FROM expanded_games AS g LEFT JOIN player_went_first AS one ON g.g_id = one.game_id GROUP BY winner, first_player_name").fetchall()
+    column_names = [name[0] for name in api.description]
+    wins_dict = [dict(zip(column_names, row)) for row in rows]
+    return wins_dict
+
+#########
+# Pages #
+#########
+
 # Define webpage home
 @app.route('/')
 def home():
@@ -13,21 +45,19 @@ def home():
     db = sqlite3.connect("dominionstats.db")
     api = db.cursor()
 
-    # Get all games
-    rows = api.execute("SELECT * FROM expanded_games AS g LEFT JOIN player_went_first AS one ON g.g_id = one.game_id LEFT JOIN player_went_second AS two ON g.g_id = two.game_id LEFT JOIN player_went_third AS three ON g.g_id = three.game_id LEFT JOIN player_went_fourth AS four ON g.g_id = four.game_id;").fetchall()
-    column_names = [name[0] for name in api.description]
-    data_dict = [dict(zip(column_names, row)) for row in rows]
-
-    # Get player list (excluding the 'None' option for 'winner')
-    players = api.execute("SELECT name FROM players WHERE name NOT LIKE 'None';").fetchall()
-    column_names = [name[0] for name in api.description]
-    player_dict = [dict(zip(column_names, player)) for player in players]
+    # Get data
+    data_dict = get_games(api)
+    player_dict = get_players(api)
+    st = dict
+    stats = dict(
+        wins = get_player_wins(api)
+    )
     
     # Close the database connection
     db.close()
 
     # Render homepage using most current data
-    return render_template("home.jinja", PASSED_data = data_dict, PASSED_players = player_dict)
+    return render_template("home.jinja", PASSED_data = data_dict, PASSED_players = player_dict, PASSED_stats = stats)
 
 # Define game submission handler
 @app.route('/newgame', methods=['POST'])
