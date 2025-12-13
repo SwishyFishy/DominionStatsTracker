@@ -96,7 +96,7 @@ main{
     position: relative;
 }
 
-#filters{
+#stats{
     position: absolute;
     right: 0;
     top: 0;
@@ -109,7 +109,7 @@ main{
     z-index: 2;
 }
 
-#filters_content{
+#stats_content{
     position: sticky;
     top: 6em;
     left: 0;
@@ -121,7 +121,7 @@ main{
     margin-right: -.5em;
 }
 
-#hide_filters, #show_filters{
+#hide_stats, #show_stats{
     position: absolute;
     left: 0;
     top: calc((100vh - 6em) / 2);
@@ -135,7 +135,7 @@ main{
     border-bottom-left-radius: 0em;
     margin: 0em .15em 0em -.15em;
 }
-#show_filters{
+#show_stats{
     left: -3em;
 
     width: 2.5em;
@@ -147,10 +147,10 @@ main{
     display: none;
 }
 
-#filters_content h2{
+#stats_content h2{
     margin: 0em;
 }
 
-#filters_content span{
+#stats_content span{
     font-style: italic;
 }

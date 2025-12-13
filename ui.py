@@ -9,13 +9,16 @@ app = Flask(__name__)
 @app.route('/')
 def home():
 
-    # Get data
+    # Open database connection
     db = sqlite3.connect("dominionstats.db")
     api = db.cursor()
+
+    # Get all games
     rows = api.execute("SELECT * FROM expanded_games AS g LEFT JOIN player_went_first AS one ON g.g_id = one.game_id LEFT JOIN player_went_second AS two ON g.g_id = two.game_id LEFT JOIN player_went_third AS three ON g.g_id = three.game_id LEFT JOIN player_went_fourth AS four ON g.g_id = four.game_id;").fetchall()
     column_names = [name[0] for name in api.description]
     data_dict = [dict(zip(column_names, row)) for row in rows]
 
+    # Get player list (excluding the 'None' option for 'winner')
     players = api.execute("SELECT name FROM players WHERE name NOT LIKE 'None';").fetchall()
     column_names = [name[0] for name in api.description]
     player_dict = [dict(zip(column_names, player)) for player in players]
