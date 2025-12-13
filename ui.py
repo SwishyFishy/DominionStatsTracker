@@ -52,6 +52,9 @@ def newgame():
     ktype = request.form['kingdom_type']
     notes = request.form['notes']
     sets = request.form['sets']
+    
+    # Sort the sets into alphabetical order for consistency in the database
+    sets = ' + '.join(sorted(sets.split(' + ')))
 
     # Connect to database
     db = sqlite3.connect("dominionstats.db")
