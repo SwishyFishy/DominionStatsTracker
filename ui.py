@@ -25,10 +25,10 @@ def get_players(api: sqlite3.Cursor) -> list[dict]:
     player_dict = [dict(zip(column_names, player)) for player in players]
     return player_dict
 
-# Return all players' win counts in a list
+# Return all players' winrates in a list
 # Each list element is a dictionary representing 1 row that mas column name -> value
-def get_player_wins(api: sqlite3.Cursor) -> list[dict]:
-    rows = api.execute("SELECT winner, COUNT(*) AS wins, first_player_name FROM expanded_games AS g LEFT JOIN player_went_first AS one ON g.g_id = one.game_id GROUP BY winner, first_player_name").fetchall()
+def get_player_winrate(api: sqlite3.Cursor) -> list[dict]:
+    rows = api.execute("SELECT winner, COUNT(*) AS wins, COUNT(*) * 100.0 / (SELECT COUNT(*) from expanded_games) AS percentage FROM expanded_games GROUP BY winner").fetchall()
     column_names = [name[0] for name in api.description]
     wins_dict = [dict(zip(column_names, row)) for row in rows]
     return wins_dict
@@ -48,9 +48,8 @@ def home():
     # Get data
     data_dict = get_games(api)
     player_dict = get_players(api)
-    st = dict
     stats = dict(
-        wins = get_player_wins(api)
+        winrates = get_player_winrate(api)
     )
     
     # Close the database connection
