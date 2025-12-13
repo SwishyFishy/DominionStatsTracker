@@ -59,6 +59,10 @@ header h1{
     padding: .0em .25em;
 }
 
+#table .multiplayer{
+    display: none;
+}
+
 #table .delete{
     width: 3em;
 }
@@ -153,8 +157,4 @@ main{
 
 #stats_content span{
     font-style: italic;
-}
-
-#stats_content .multiplayer{
-    display: none;
 }
