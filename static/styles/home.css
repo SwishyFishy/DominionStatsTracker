@@ -154,3 +154,7 @@ main{
 #stats_content span{
     font-style: italic;
 }
+
+#stats_content .multiplayer{
+    display: none;
+}
