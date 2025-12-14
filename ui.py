@@ -28,10 +28,10 @@ def get_players(api: sqlite3.Cursor) -> list[dict]:
 # Return all players' winrates in a list
 # Each list element is a dictionary representing 1 row that mas column name -> value
 def get_player_winrate(api: sqlite3.Cursor) -> list[dict]:
-    rows = api.execute("SELECT winner, COUNT(*) AS wins, COUNT(*) * 100.0 / (SELECT COUNT(*) from expanded_games) AS percentage FROM expanded_games GROUP BY winner").fetchall()
+    rows = api.execute("SELECT winner, COUNT(*) AS wins, printf('%.2f', COUNT(*) * 100.0 / (SELECT COUNT(*) from expanded_games)) AS percentage FROM expanded_games GROUP BY winner").fetchall()
     column_names = [name[0] for name in api.description]
-    wins_dict = [dict(zip(column_names, row)) for row in rows]
-    return wins_dict
+    winrates_dict = [dict(zip(column_names, row)) for row in rows]
+    return winrates_dict
 
 #########
 # Pages #

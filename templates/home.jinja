@@ -159,6 +159,24 @@
                 <button name="show_stats" id="show_stats">&lt;</button>
                 <h2>Statistics</h2>
                 <span>To view 3- and 4- player games, hide this panel.</span>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Player</th>
+                            <th>Wins</th>
+                            <th>Winrate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for winrate in PASSED_stats['winrates'] %}
+                            <tr>
+                                <td>{{ winrate['winner'] }}</td>
+                                <td>{{ winrate['wins'] }}</td>
+                                <td>{{ winrate['percentage'] }}%</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </section>
     </main>
