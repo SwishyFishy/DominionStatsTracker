@@ -28,15 +28,15 @@ def get_players(api: sqlite3.Cursor) -> list[dict]:
     player_dict = [dict(zip(column_names, player)) for player in players]
     return player_dict
 
-# Return all players' wins in a list
+# Return a list containing a passed player's wins and winrate
 # Each list element is a dictionary representing 1 row that maps column name -> value
-def get_wins(api: sqlite3.Cursor) -> list[dict]:
-    rows = api.execute("SELECT winner, COUNT(*) AS wins FROM expanded_games GROUP BY winner").fetchall()
+def get_player_wins(api: sqlite3.Cursor, player) -> list[dict]:
+    rows = api.execute(f"WITH combined AS ({combined}) SELECT winner, COUNT(*) AS wins, printf('%.2f', COUNT(*) * 100.0 / (SELECT COUNT(*) FROM combined WHERE first_player_name LIKE '{player}' OR second_player_name LIKE '{player}' OR third_player_name LIKE '{player}' OR fourth_player_name LIKE '{player}')) as winrate FROM expanded_games WHERE winner LIKE '{player}'").fetchall()
     column_names = [name[0] for name in api.description]
     wins_dict = [dict(zip(column_names, row)) for row in rows]
     return wins_dict
 
-# Return a single-element list containing a passed player's winrate from a passed position in turn order
+# Return a list containing a passed player's wins and winrate from a passed position in turn order
 # List element is a dictionary representing 1 row that maps column name -> value
 def get_player_winrate_by_turn(api: sqlite3.Cursor, player, position) -> list[dict]:
     select = "first_player_name"
@@ -71,10 +71,9 @@ def home():
     player_dict = get_players(api)
 
     stats = dict(
-        wins = get_wins(api),
+        wins = [get_player_wins(api, player['name']) for player in player_dict],
         positional_winrates = [(get_player_winrate_by_turn(api, player['name'], position), player, position) for player in player_dict for position in range(1, 5)]
     )
-    app.logger.info(stats['positional_winrates'])
     
     # Close the database connection
     db.close()
