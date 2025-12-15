@@ -164,16 +164,38 @@
                         <tr>
                             <th>Player</th>
                             <th>Wins</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for wins in PASSED_stats['wins'] %}
+                            <tr>
+                                <td>{{ wins['winner'] }}</td>
+                                <td>{{ wins['wins'] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <table>
+                    <thead>   
+                        <tr>
+                            <th>Player</th>
+                            <th>Turn</th>
+                            <th>Wins</th>
+                            <th>Games</th>
                             <th>Winrate</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for winrate in PASSED_stats['winrates'] %}
-                            <tr>
-                                <td>{{ winrate['winner'] }}</td>
-                                <td>{{ winrate['wins'] }}</td>
-                                <td>{{ winrate['percentage'] }}%</td>
-                            </tr>
+                        {% for statset in PASSED_stats['positional_winrates'] %}
+                            {% for winrate in statset[0] %}
+                                <tr>
+                                    <td>{{ statset[1]['name'] }}</td>
+                                    <td>{{ statset[2] }}</td>
+                                    <td>{{ winrate['wins'] }}</td>
+                                    <td>{{ winrate['games'] }}</td>
+                                    <td>{{ winrate['percentage'] }}%</td>
+                                </tr>
+                            {% endfor %}
                         {% endfor %}
                     </tbody>
                 </table>

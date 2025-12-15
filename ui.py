@@ -9,6 +9,9 @@ app = Flask(__name__)
 # Query Functions #
 ###################
 
+# Define useful shorthands
+combined = "SELECT * FROM expanded_games as g LEFT JOIN player_went_first AS one ON g.g_id = one.game_id LEFT JOIN player_went_second AS two ON g.g_id = two.game_id LEFT JOIN player_went_third AS three ON g.g_id = three.game_id LEFT JOIN player_went_fourth AS four ON g.g_id = four.game_id"
+
 # Return all games in a list
 # Each list element is a dictionary representing 1 row that maps column name -> value
 def get_games(api: sqlite3.Cursor) -> list[dict]:
@@ -17,18 +20,36 @@ def get_games(api: sqlite3.Cursor) -> list[dict]:
     data_dict = [dict(zip(column_names, row)) for row in rows]
     return data_dict
 
-# Return all players (except 'None') in a list
-# Each list element is a dictionary with a single key/value pair; 'name' -> value
+# Return all players and the number of games played in a list
+# Each list element is a dictionary representing 1 row that maps column name -> value
 def get_players(api: sqlite3.Cursor) -> list[dict]:
-    players = api.execute("SELECT name FROM players WHERE name NOT LIKE 'None';").fetchall()
+    players = api.execute(f"WITH combined AS ({combined}) SELECT name, COUNT(*) as games FROM combined CROSS JOIN players WHERE (name LIKE first_player_name OR name LIKE second_player_name OR name LIKE third_player_name OR name LIKE fourth_player_name) AND name NOT LIKE 'None' GROUP BY name").fetchall()
     column_names = [name[0] for name in api.description]
     player_dict = [dict(zip(column_names, player)) for player in players]
     return player_dict
 
-# Return all players' winrates in a list
-# Each list element is a dictionary representing 1 row that mas column name -> value
-def get_player_winrate(api: sqlite3.Cursor) -> list[dict]:
-    rows = api.execute("SELECT winner, COUNT(*) AS wins, printf('%.2f', COUNT(*) * 100.0 / (SELECT COUNT(*) from expanded_games)) AS percentage FROM expanded_games GROUP BY winner").fetchall()
+# Return all players' wins in a list
+# Each list element is a dictionary representing 1 row that maps column name -> value
+def get_wins(api: sqlite3.Cursor) -> list[dict]:
+    rows = api.execute("SELECT winner, COUNT(*) AS wins FROM expanded_games GROUP BY winner").fetchall()
+    column_names = [name[0] for name in api.description]
+    wins_dict = [dict(zip(column_names, row)) for row in rows]
+    return wins_dict
+
+# Return a single-element list containing a passed player's winrate from a passed position in turn order
+# List element is a dictionary representing 1 row that maps column name -> value
+def get_player_winrate_by_turn(api: sqlite3.Cursor, player, position) -> list[dict]:
+    select = "first_player_name"
+    
+    match position:
+        case 2:
+            select = "second_player_name"
+        case 3:
+            select = "third_player_name"
+        case 4:
+            select = "fourth_player_name"
+
+    rows = api.execute(f"WITH combined AS ({combined}) SELECT {select}, winner, COUNT(*) AS wins, (SELECT COUNT(*) from combined WHERE {select} LIKE '{player}') AS games, printf('%.2f', COUNT(*) * 100.0 / (SELECT COUNT(*) from combined WHERE {select} LIKE '{player}')) AS percentage FROM combined WHERE {select} LIKE '{player}' AND winner LIKE '{player}' GROUP BY winner;").fetchall()
     column_names = [name[0] for name in api.description]
     winrates_dict = [dict(zip(column_names, row)) for row in rows]
     return winrates_dict
@@ -48,15 +69,18 @@ def home():
     # Get data
     data_dict = get_games(api)
     player_dict = get_players(api)
+
     stats = dict(
-        winrates = get_player_winrate(api)
+        wins = get_wins(api),
+        positional_winrates = [(get_player_winrate_by_turn(api, player['name'], position), player, position) for player in player_dict for position in range(1, 5)]
     )
+    app.logger.info(stats['positional_winrates'])
     
     # Close the database connection
     db.close()
 
     # Render homepage using most current data
-    return render_template("home.jinja", PASSED_data = data_dict, PASSED_players = player_dict, PASSED_stats = stats)
+    return render_template("home.jinja", zip = zip, PASSED_data = data_dict, PASSED_players = player_dict, PASSED_stats = stats)
 
 # Define game submission handler
 @app.route('/newgame', methods=['POST'])
