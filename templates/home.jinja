@@ -60,12 +60,12 @@
                                 <td>${{ row['first_player_t2_coin'] }}</td>
                                 <td>{{ row['second_player_name'] }}</td>
                                 <td>{{ row['second_player_score'] }}vp</td>
-                                <td>${{ row['first_player_t1_coin'] }}</td>
-                                <td>${{ row['first_player_t2_coin'] }}</td>
+                                <td>${{ row['second_player_t1_coin'] }}</td>
+                                <td>${{ row['second_player_t2_coin'] }}</td>
                                 <td>{{ row['third_player_name'] if row['num_players'] > 2 else "--"}}</td>
                                 <td>{{ row['third_player_score']|string + "vp" if row['num_players'] > 2 else "--"}}</td>
-                                <td>{{ "$" + row['first_player_t1_coin']|string if row['num_players'] > 2 else "--"}}</td>
-                                <td>{{ "$" + row['first_player_t2_coin']|string if row['num_players'] > 2 else "--"}}</td>
+                                <td>{{ "$" + row['third_player_t1_coin']|string if row['num_players'] > 2 else "--"}}</td>
+                                <td>{{ "$" + row['third_player_t2_coin']|string if row['num_players'] > 2 else "--"}}</td>
                                 <td>{{ row['fourth_player_name'] if row['num_players'] > 3 else "--"}}</td>
                                 <td>{{ row['fourth_player_score']|string + "vp" if row['num_players'] > 3 else "--"}}</td>
                                 <td>{{ "$" + row['fourth_player_t1_coin']|string if row['num_players'] > 3 else "--"}}</td>
